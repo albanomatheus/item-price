@@ -1,9 +1,3 @@
-<!--
-  Generated template for the CompararPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -12,9 +6,8 @@
 
 </ion-header>
 
-
 <ion-content padding>
-  <ion-list item-width="500">   
+  <ion-list>   
     <ion-item>
       <ion-label floating>Nome do item</ion-label>
       <ion-input type="text" [(ngModel)]="item.nome"></ion-input>
@@ -29,7 +22,17 @@
       <ion-label floating>Preço no site</ion-label>
       <ion-input type="number" [(ngModel)]="item.preco.site"></ion-input>
     </ion-item>
+
+    <button ion-button (click)="addItem()" full>Adicionar item</button>
+    <button ion-button (click)="clearItem()" full color="danger">Limpar</button>  
   </ion-list>
 
-  <button ion-button (click)="addItem()">Adicionar item</button>
+  <ion-list>
+    <ion-item *ngFor="let item of itens; let i = index">
+      <h2>{{item.nome}}</h2>
+      <p>R$ {{item.preco.steam}} (venda: {{item.preco.steam * 0.85}}) / $ {{item.preco.site}} (venda: ~{{item.preco.site * 0.84}}) = <span style="color:blue">{{item.preco.div}}</span></p>
+      <button ion-button item-end>Editar</button>
+      <button ion-button item-end color="danger" (click)="removeItem(i)">Remover</button>
+    </ion-item>
+  </ion-list>
 </ion-content>

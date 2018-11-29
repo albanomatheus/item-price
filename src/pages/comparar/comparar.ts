@@ -18,10 +18,13 @@ export class CompararPage {
   private item = {
     nome: "",
     preco: {
-      steam: "",
-      site: ""
-    }
+      steam: null,
+      site: null,
+      div: null
+    } 
   };
+
+  private itens = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -30,7 +33,23 @@ export class CompararPage {
   }
 
   addItem() {
-    console.log(this.item);
+    this.item.preco.div = (this.item.preco.steam * 0.85) / this.item.preco.site;
+    this.itens.push({nome: this.item.nome, preco: {...this.item.preco}})
+    this.itens.sort((a, b) => b.preco.div - a.preco.div);
   }
 
+  clearItem() {
+    this.item = {
+      nome: "",
+      preco: {
+        steam: null,
+        site: null,
+        div: null
+      } 
+    }
+  }
+
+  removeItem(index) {
+    this.itens.splice(index, 1);
+  }
 }
