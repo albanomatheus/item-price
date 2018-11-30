@@ -7,30 +7,55 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>   
+  <ion-list>
     <ion-item>
       <ion-label floating>Nome do item</ion-label>
       <ion-input type="text" [(ngModel)]="item.nome"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label floating>Preço na Steam</ion-label>
-      <ion-input type="number" [(ngModel)]="item.preco.steam"></ion-input>
-    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-item no-lines>
+          <ion-label floating>Preço na Steam</ion-label>
+          <ion-input type="number" [(ngModel)]="item.preco.steam"></ion-input>
+        </ion-item>
+      </ion-col>
 
-    <ion-item>
-      <ion-label floating>Preço no site</ion-label>
-      <ion-input type="number" [(ngModel)]="item.preco.site"></ion-input>
-    </ion-item>
+      <ion-col>
+        <ion-item no-lines>
+          <ion-label floating>Preço no site</ion-label>
+          <ion-input type="number" [(ngModel)]="item.preco.site"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
     <button ion-button (click)="addItem()" full>Adicionar item</button>
-    <button ion-button (click)="clearItem()" full color="danger">Limpar</button>  
+    <button ion-button (click)="clearItem()" full color="danger">Limpar</button>
   </ion-list>
+
+  <ion-row radio-group [(ngModel)]="modo">
+    <ion-col>
+      <ion-item>
+        <ion-label>Depositar no site</ion-label>
+        <ion-radio value="site" (click)="reDo()"></ion-radio>
+      </ion-item>
+    </ion-col>
+
+    <ion-col>
+      <ion-item>
+        <ion-label>Vender na Steam</ion-label>
+        <ion-radio value="steam" (click)="reDo()"></ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
 
   <ion-list>
     <ion-item *ngFor="let item of itens; let i = index">
       <h2>{{item.nome}}</h2>
-      <p>R$ {{item.preco.steam}} (venda: {{item.preco.steam * 0.85}}) / $ {{item.preco.site}} (venda: ~{{item.preco.site * 0.84}}) = <span style="color:blue">{{item.preco.div}}</span></p>
+      <p>R$ {{item.preco.steam}} (venda: {{item.preco.steam * 0.85}}) / $ {{item.preco.site}} (venda: ~{{item.preco.site * 0.8461}})
+        =
+        <span style="color:blue">{{item.preco.div}}</span>
+      </p>
       <button ion-button item-end>Editar</button>
       <button ion-button item-end color="danger" (click)="removeItem(i)">Remover</button>
     </ion-item>
