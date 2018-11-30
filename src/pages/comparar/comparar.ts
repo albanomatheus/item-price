@@ -1,12 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the CompararPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -15,26 +9,30 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CompararPage {
 
-  private modo = "site";
-  private itens = [];
+  private modo;
+  private itens;
   private item = {
     nome: "",
     preco: {
       steam: null,
       site: null,
       div: null
-    } 
+    }
   };
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private storage: Storage) {
   }
 
   ionViewDidLoad() {
+    this.getModo();
+    this.getItens();
   }
 
   calculate(item, modo) {
-    if(modo == "steam") {
+    if (modo == "steam") {
       item.preco.div = (item.preco.steam * 0.85) / item.preco.site;
     } else {
       item.preco.div = (item.preco.steam) / (item.preco.site * 0.8461);
@@ -44,7 +42,7 @@ export class CompararPage {
   }
 
   order(modo) {
-    if(modo == "steam") {
+    if (modo == "steam") {
       this.itens.sort((a, b) => b.preco.div - a.preco.div);
     } else {
       this.itens.sort((a, b) => a.preco.div - b.preco.div);
@@ -55,6 +53,7 @@ export class CompararPage {
     this.calculate(this.item, this.modo);
     this.itens.push({nome: this.item.nome, preco: {...this.item.preco}})
     this.order(this.modo);
+    this.save()
   }
 
   reDo() {
@@ -62,6 +61,7 @@ export class CompararPage {
       return this.calculate(item, this.modo)
     });
     this.order(this.modo);
+    this.save();
   }
 
   clearItem() {
@@ -71,11 +71,30 @@ export class CompararPage {
         steam: null,
         site: null,
         div: null
-      } 
+      }
     }
   }
 
   removeItem(index) {
     this.itens.splice(index, 1);
+    this.save();
+  }
+
+  save() {
+    this.storage.set("itens", this.itens);
+    this.storage.set("modo", this.modo);
+  }
+
+  getItens() {
+    this.storage.get("itens").then(val => {
+      this.itens = val ? val : [];
+      this.reDo()
+    })
+  }
+
+  getModo() {
+    this.storage.get("modo").then(val => {
+      this.modo = val ? val : "site";
+    })
   }
 }

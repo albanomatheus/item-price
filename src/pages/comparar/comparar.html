@@ -29,8 +29,19 @@
       </ion-col>
     </ion-row>
 
-    <button ion-button (click)="addItem()" full>Adicionar item</button>
-    <button ion-button (click)="clearItem()" full color="danger">Limpar</button>
+    <ion-row>
+      <ion-col>
+        <ion-item no-lines>
+          <button ion-button (click)="addItem()" full>Adicionar item</button>
+        </ion-item>
+      </ion-col>
+    
+      <ion-col>
+        <ion-item no-lines>
+          <button ion-button (click)="clearItem()" full color="danger">Limpar</button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
   </ion-list>
 
   <ion-row radio-group [(ngModel)]="modo">
