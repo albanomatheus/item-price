@@ -32,13 +32,15 @@
     <ion-row>
       <ion-col>
         <ion-item no-lines>
-          <button ion-button (click)="addItem()" full>Adicionar item</button>
+          <button ion-button style="height: 40px;" (click)="addItem()" full *ngIf="!editando">Adicionar item</button>
+          <button ion-button style="height: 40px;" (click)="editItem()" full *ngIf="editando" color="secondary">Atualizar</button>
         </ion-item>
       </ion-col>
     
       <ion-col>
         <ion-item no-lines>
-          <button ion-button (click)="clearItem()" full color="danger">Limpar</button>
+          <button ion-button style="height: 40px;" (click)="clearItem()" full *ngIf="!editando" color="danger">Limpar</button>
+          <button ion-button style="height: 40px;" (click)="cancelEdit()" full *ngIf="editando" color="danger">Cancelar</button>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -67,7 +69,7 @@
         =
         <span style="color:blue">{{item.preco.div}}</span>
       </p>
-      <button ion-button item-end>Editar</button>
+      <button ion-button item-end (click)="placeItem(item, i)">Editar</button>
       <button ion-button item-end color="danger" (click)="removeItem(i)">Remover</button>
     </ion-item>
   </ion-list>

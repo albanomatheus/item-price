@@ -9,6 +9,8 @@ import { Storage } from '@ionic/storage';
 })
 export class CompararPage {
 
+  private itemAux;
+  private editando;
   private modo;
   private itens;
   private item = {
@@ -54,6 +56,24 @@ export class CompararPage {
     this.itens.push({nome: this.item.nome, preco: {...this.item.preco}})
     this.order(this.modo);
     this.save()
+  }
+
+  editItem() {
+    this.editando = false;
+    this.reDo()
+  }
+
+  cancelEdit() {
+    this.editando = false;
+    this.itens[this.itemAux.index] = {nome: this.itemAux.nome, preco: {...this.itemAux.preco}}
+    this.save()
+    this.clearItem();
+  }
+
+  placeItem(item, index) {
+    this.editando = true;
+    this.itemAux = {nome: item.nome, preco: {...item.preco}, index: index};
+    this.item = item;
   }
 
   reDo() {
