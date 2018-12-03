@@ -11,6 +11,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CompararPage } from '../pages/comparar/comparar';
 import { FavoritosPage } from '../pages/favoritos/favoritos';
 import { TotalPage } from '../pages/total/total';
+import { DataBaseProvider } from '../providers/data-base/data-base';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { TotalPage } from '../pages/total/total';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DataBaseProvider
   ]
 })
 export class AppModule {}

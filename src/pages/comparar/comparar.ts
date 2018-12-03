@@ -1,11 +1,14 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import {IonicPage, NavController, NavParams, ModalController, Modal} from 'ionic-angular';
+import { DataBaseProvider } from '../../providers/data-base/data-base';
 
 @IonicPage()
 @Component({
   selector: 'page-comparar',
   templateUrl: 'comparar.html',
+  providers: [
+    DataBaseProvider
+  ]
 })
 export class CompararPage {
 
@@ -25,7 +28,8 @@ export class CompararPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private storage: Storage) {
+              private modal: ModalController,
+              private dataBase: DataBaseProvider) {
   }
 
   ionViewDidLoad() {
@@ -39,7 +43,7 @@ export class CompararPage {
     } else {
       item.preco.div = (item.preco.steam) / (item.preco.site * 0.8461);
     }
-
+    
     return item;
   }
 
@@ -56,24 +60,6 @@ export class CompararPage {
     this.itens.push({nome: this.item.nome, preco: {...this.item.preco}})
     this.order(this.modo);
     this.save()
-  }
-
-  editItem() {
-    this.editando = false;
-    this.reDo()
-  }
-
-  cancelEdit() {
-    this.editando = false;
-    this.itens[this.itemAux.index] = {nome: this.itemAux.nome, preco: {...this.itemAux.preco}}
-    this.save()
-    this.clearItem();
-  }
-
-  placeItem(item, index) {
-    this.editando = true;
-    this.itemAux = {nome: item.nome, preco: {...item.preco}, index: index};
-    this.item = item;
   }
 
   reDo() {
@@ -101,20 +87,31 @@ export class CompararPage {
   }
 
   save() {
-    this.storage.set("itens", this.itens);
-    this.storage.set("modo", this.modo);
+    this.dataBase.save("itens", this.itens);
+    this.dataBase.save("modo", this.modo);
   }
 
   getItens() {
-    this.storage.get("itens").then(val => {
+    this.dataBase.get("itens").then(val => {
       this.itens = val ? val : [];
       this.reDo()
     })
   }
 
   getModo() {
-    this.storage.get("modo").then(val => {
+    this.dataBase.get("modo").then(val => {
       this.modo = val ? val : "site";
+    })
+  }
+
+  openModal(i) {
+    const myModal: Modal = this.modal.create("ModalPage", {data: this.itens[i]});
+    myModal.present();
+    myModal.onDidDismiss(data => {
+      console.log(data)
+      this.itens[i] = {nome: data.nome, preco: {...data.preco}};
+      this.calculate(this.itens[i], this.modo)
+      this.save()
     })
   }
 }

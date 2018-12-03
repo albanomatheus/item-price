@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
+  <ion-list id="itemForm">
     <ion-item>
       <ion-label floating>Nome do item</ion-label>
       <ion-input type="text" [(ngModel)]="item.nome"></ion-input>
@@ -32,15 +32,13 @@
     <ion-row>
       <ion-col>
         <ion-item no-lines>
-          <button ion-button style="height: 40px;" (click)="addItem()" full *ngIf="!editando">Adicionar item</button>
-          <button ion-button style="height: 40px;" (click)="editItem()" full *ngIf="editando" color="secondary">Atualizar</button>
+          <button ion-button style="height: 40px;" (click)="addItem()" full>Adicionar item</button>
         </ion-item>
       </ion-col>
     
       <ion-col>
         <ion-item no-lines>
-          <button ion-button style="height: 40px;" (click)="clearItem()" full *ngIf="!editando" color="danger">Limpar</button>
-          <button ion-button style="height: 40px;" (click)="cancelEdit()" full *ngIf="editando" color="danger">Cancelar</button>
+          <button ion-button style="height: 40px;" (click)="clearItem()" full color="danger">Limpar</button>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -65,11 +63,8 @@
   <ion-list>
     <ion-item *ngFor="let item of itens; let i = index">
       <h2>{{item.nome}}</h2>
-      <p>R$ {{item.preco.steam}} (venda: {{item.preco.steam * 0.85}}) / $ {{item.preco.site}} (venda: ~{{item.preco.site * 0.8461}})
-        =
-        <span style="color:blue">{{item.preco.div}}</span>
-      </p>
-      <button ion-button item-end (click)="placeItem(item, i)">Editar</button>
+      <p>R$ {{item.preco.steam}} (venda: {{item.preco.steam * 0.85}}) / $ {{item.preco.site}} (venda: ~{{item.preco.site * 0.8461}}) = <span style="color:blue">{{item.preco.div}}</span></p>
+      <button ion-button item-end (click)="openModal(i)">Editar</button>
       <button ion-button item-end color="danger" (click)="removeItem(i)">Remover</button>
     </ion-item>
   </ion-list>
